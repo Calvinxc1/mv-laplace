@@ -1,34 +1,44 @@
-# Multivariate Laplace Distribution
-A sampler package from a Multivariate Laplace distrbrution.
+# mv-laplace
+A sampler-focused implementation of the [Multivariate Laplace distribution](https://en.wikipedia.org/wiki/Multivariate_Laplace_distribution).
 
-## Background
-I've been exploring Quantitative Finance for awhile now, and one frustrating point is the lack of a good sampler for a Multivariate Laplace distribution. As such I re-purposed a multivariate normal, normal, and Laplace distribution to fill the role of a multivariate Laplace. This isn't a fully implemented scipy-like class, similar to my [PertDist package](https://pypi.org/project/pertdist/), but just enough for me to spin up a custom MCMC routine and do some proper financial modeling.
+## Motivation
+I have been exploring quantitative finance for a while, and one recurring pain point is the lack of a practical sampler for a Multivariate Laplace distribution. To fill that gap, I repurposed multivariate normal, normal, and Laplace sampling components into a single workflow for Multivariate Laplace sampling.
+
+Unlike scipy-style distribution classes, this package currently focuses on sampling rather than full distributional APIs. The goal is to provide enough functionality to support custom MCMC routines and practical financial modeling workflows.
 
 ## Installation
-This package is on PyPi, and can be installed using `pip install mv-laplace`
+Installation is straightforward: `pip install mv-laplace`
 
-## Usage
-Unlike the scipy implementations this is based on, this distribution class provides sampling abilities only and no distributional parameters. The package is pretty straightforward to use:
+## Code Example
+Usage is intentionally simple:
 
-```
+```python
 from mv_laplace import MvLaplaceSampler
 
 sampler = MvLaplaceSampler(loc, cov)
 samples = sampler.sample(sample_size)
 ```
 
-The input should be a pair of arrays, the first of which containing the location values (the means) in a vector of length M, and the second containing the covariance matrix in a MxM matrix. The return will be a NxM matrix, with N being the `sample_size` input on the sampler. I used [Wikipedia](https://en.wikipedia.org/wiki/Multivariate_Laplace_distribution) for basic reference on terminology.
+Input should be:
+- `loc`: a length-`M` location vector.
+- `cov`: an `M x M` covariance matrix.
+
+The returned samples are an `N x M` matrix, where `N` is `sample_size`.
 
 ## Disclaimer
-I provide no guarentees that this package fits proper statistical robustness of how a multivariate Laplace is supposed to work, just that it seems to work for the use case I have identified. Use at your own risk.
+I do not guarantee that this implementation fully matches every statistical expectation for a Multivariate Laplace distribution. It is built to solve the use case above and appears to perform well there. Use at your own risk.
 
 ## Roadmap
-* Figure out how to calculate summary information, and refactor API to a scipi-like interface
-* Add a Multivariate Asymmetric Laplace distribution class
+* Add summary-statistic methods and move toward a scipy-like API.
+* Add a Multivariate Asymmetric Laplace distribution class.
+* Add unit tests to better validate behavior across common input types.
 
-## [Version History](./VersionHistory.md)
+A version history is located [here](./VersionHistory.md).
+
+## Contributing
+Contributions are welcome. Feel free to open an issue or submit a pull request with improvements, fixes, or ideas.
 
 ## License
-This project uses the GNU General Public License.
+This project uses the [GNU General Public License](./LICENSE).
 
 Short version: Have fun and use it for whatever, just make sure to attribute me for it (-:
