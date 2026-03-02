@@ -45,6 +45,7 @@ samples = sampler.sample(sample_size=1000)
 ## Input Expectations
 - `loc` should be a length-`M` vector.
 - `cov` should be an `M x M` covariance matrix.
+- Input validation and most constructor error behavior are delegated to underlying SciPy distributions.
 - `sample(sample_size=None)` returns:
   - shape `(M,)` when `sample_size` is `None`
   - shape `(N, M)` when `sample_size` is an integer `N`

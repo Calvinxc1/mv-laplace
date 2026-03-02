@@ -86,6 +86,27 @@ def test_constructor_raises_for_non_psd_covariance():
         MvLaplaceSampler(loc=loc, cov=cov)
 
 
+@pytest.mark.parametrize(
+    ("loc", "cov"),
+    [
+        (0.0, 1.0),
+        ([0.0, 1.0], np.eye(3)),
+        ([0.0, 1.0], np.array([[1.0, 0.0, 0.0], [0.0, 1.0, 0.0]])),
+    ],
+)
+def test_constructor_invalid_shapes_raise_value_error(loc, cov):
+    with pytest.raises(ValueError):
+        MvLaplaceSampler(loc=loc, cov=cov)
+
+
+def test_constructor_warns_for_non_finite_loc():
+    loc = np.array([np.inf, 1.0])
+    cov = np.eye(2)
+
+    with pytest.warns(RuntimeWarning, match="Non-finite values detected in `loc`"):
+        MvLaplaceSampler(loc=loc, cov=cov)
+
+
 def test_marginal_mean_and_variance_match_targets_for_diagonal_covariance():
     np.random.seed(42)
 
