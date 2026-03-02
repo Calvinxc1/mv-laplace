@@ -1,44 +1,110 @@
 # mv-laplace
-A sampler-focused implementation of the [Multivariate Laplace distribution](https://en.wikipedia.org/wiki/Multivariate_Laplace_distribution).
+[![CI (main)](https://github.com/Calvinxc1/mv-laplace/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Calvinxc1/mv-laplace/actions/workflows/ci.yml?query=branch%3Amain)
+[![PyPI version](https://img.shields.io/pypi/v/mv-laplace.svg)](https://pypi.org/project/mv-laplace/)
 
-## Motivation
-I have been exploring quantitative finance for a while, and one recurring pain point is the lack of a practical sampler for a Multivariate Laplace distribution. To fill that gap, I repurposed multivariate normal, normal, and Laplace sampling components into a single workflow for Multivariate Laplace sampling.
+`mv-laplace` is a sampler-focused implementation of the [Multivariate Laplace distribution](https://en.wikipedia.org/wiki/Multivariate_Laplace_distribution).
 
-Unlike scipy-style distribution classes, this package currently focuses on sampling rather than full distributional APIs. The goal is to provide enough functionality to support custom MCMC routines and practical financial modeling workflows.
+## Overview
+The package exposes a `MvLaplaceSampler` class for generating multivariate Laplace-like samples from a location vector and covariance matrix. It is intentionally focused on sampling and practical workflow support rather than a full SciPy-style distribution API.
 
 ## Installation
-Installation is straightforward: `pip install mv-laplace`
-
-## Code Example
-Usage is intentionally simple:
-
-```python
-from mv_laplace import MvLaplaceSampler
-
-sampler = MvLaplaceSampler(loc, cov)
-samples = sampler.sample(sample_size)
+```bash
+pip install mv-laplace
 ```
 
-Input should be:
-- `loc`: a length-`M` location vector.
-- `cov`: an `M x M` covariance matrix.
+## Python Version
+- `Python >= 3.11`
 
-The returned samples are an `N x M` matrix, where `N` is `sample_size`.
+## Support
+- Supported Python: `3.11+`
+- Primary package index: [PyPI (`mv-laplace`)](https://pypi.org/project/mv-laplace/)
 
-## Disclaimer
-I do not guarantee that this implementation fully matches every statistical expectation for a Multivariate Laplace distribution. It is built to solve the use case above and appears to perform well there. Use at your own risk.
+## Quick Start
+```python
+import numpy as np
+from mv_laplace import MvLaplaceSampler
+
+loc = np.array([0.0, 1.0, -2.0])
+cov = np.array([
+    [1.0, 0.2, 0.1],
+    [0.2, 2.0, -0.3],
+    [0.1, -0.3, 1.5],
+])
+
+sampler = MvLaplaceSampler(loc=loc, cov=cov)
+samples = sampler.sample(sample_size=1000)
+```
+
+## Implemented API
+### Constructor
+- `MvLaplaceSampler(loc, cov)`
+
+### Methods
+- `sample(sample_size=None)`
+
+## Input Expectations
+- `loc` should be a length-`M` vector.
+- `cov` should be an `M x M` covariance matrix.
+- `sample(sample_size=None)` returns:
+  - shape `(M,)` when `sample_size` is `None`
+  - shape `(N, M)` when `sample_size` is an integer `N`
+
+## Testing
+The project includes a pytest suite under [`tests/`](tests/), including coverage for:
+- output shape behavior for single and batched sampling
+- finite-value checks for generated samples
+- empirical mean/variance checks for diagonal-covariance cases
+
+Run tests with:
+```bash
+uv run pytest -q
+```
+
+## Development Setup
+Install development dependencies:
+```bash
+uv sync --all-extras --dev
+```
+
+Run lint and tests:
+```bash
+uv run ruff check .
+uv run pytest -q
+```
 
 ## Roadmap
-* Add summary-statistic methods and move toward a scipy-like API.
-* Add a Multivariate Asymmetric Laplace distribution class.
-* Add unit tests to better validate behavior across common input types.
+- Add richer input validation and explicit error messages.
+- Add summary-statistic utilities and SciPy-style API extensions.
+- Explore a Multivariate Asymmetric Laplace distribution class.
 
-A version history is located [here](./VersionHistory.md).
+## Version History
+See [`VersionHistory.md`](VersionHistory.md).
 
 ## Contributing
-Contributions are welcome. Feel free to open an issue or submit a pull request with improvements, fixes, or ideas.
+- Community and core-developer contribution workflow is documented in [`CONTRIBUTING.md`](CONTRIBUTING.md).
+- Repository guardrails and policy details are defined in [`AGENTS.md`](AGENTS.md).
+
+## Release Process (High-Level)
+- Pull requests from `release/*` and `hotfix/*` into `main` run publish dry-run checks.
+- Merged `release/*` / `hotfix/*` PRs to `main` trigger publish, tagging, release metadata, and post-release verification workflows.
+- Recovery actions (including yank/unyank verification with runbook guidance) are run manually when needed.
+
+## Reporting Issues
+- Bug reports and feature requests: [GitHub Issues](https://github.com/Calvinxc1/mv-laplace/issues)
+- Security-sensitive concerns can be reported privately using GitHub repository security reporting.
+
+## Repository Policy
+High-level development policy summary (full details in [`AGENTS.md`](AGENTS.md)):
+- GitFlow is used: `feature/* -> dev`, `release/*|hotfix/* -> main`, with PR-based merges.
+- Community contributions are welcome through `feature/* -> dev` pull requests; `release/*` and `hotfix/*` flows are core-developer managed.
+- CI runs on PRs to `dev` and `main`; release dry-runs run on `release/*`/`hotfix/*` PRs to `main`; release publish runs after merge to `main`.
+- Semantic Versioning is required (`MAJOR.MINOR.PATCH`) and versioning must be intentional.
+- Some defaults are guidance (for example draft PR by default) and developer discretion is explicitly supported.
+- `uv.lock` is developer-local and is not tracked in this repository.
+- Functional library code is authored manually.
+- AI tooling may assist with test authoring, documentation drafting/editing, GitHub Actions/workflow authoring and maintenance, and development guidance for planning/decision support.
+
+For release notes and historical change context, see [`VersionHistory.md`](VersionHistory.md).
 
 ## License
-This project uses the [GNU General Public License](./LICENSE).
-
-Short version: Have fun and use it for whatever, just make sure to attribute me for it (-:
+This project is licensed under the GNU GPL. See [`LICENSE`](LICENSE).

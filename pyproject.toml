@@ -1,22 +1,62 @@
 [project]
 name = "mv-laplace"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.1.1"
+description = "Sampler-focused multivariate Laplace implementation for simulation workflows."
+readme = "README.md"
+license = { text = "GPL-3.0-only" }
 requires-python = ">=3.11"
+authors = [
+    { name = "Jason M. Cherry", email = "jcherry@gmail.com" },
+]
+keywords = [
+    "multivariate-laplace",
+    "laplace",
+    "distribution",
+    "sampling",
+    "simulation",
+    "quantitative-finance",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
 dependencies = [
     "numpy>=2.4.2",
     "scipy>=1.17.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/Calvinxc1/mv-laplace"
+Repository = "https://github.com/Calvinxc1/mv-laplace"
+Issues = "https://github.com/Calvinxc1/mv-laplace/issues"
+Changelog = "https://github.com/Calvinxc1/mv-laplace/blob/main/VersionHistory.md"
 
 [dependency-groups]
 dev = [
     "ipykernel>=7.2.0",
     "jupyter>=1.1.1",
     "notebook>=7.5.3",
+    "pylint>=4.0.5",
     "pytest>=9.0.2",
     "pytest-cov>=7.0.0",
+    "ruff>=0.15.4",
 ]
 
 [build-system]
 requires = ["uv_build>=0.9.25,<0.10.0"]
 build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "mv_laplace"
+
+[tool.coverage.run]
+relative_files = true
+source = ["src"]
