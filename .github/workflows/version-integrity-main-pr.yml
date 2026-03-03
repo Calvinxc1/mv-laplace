@@ -37,15 +37,22 @@ jobs:
           if base_ref != "main":
               raise SystemExit(f"This workflow only supports PRs to main, got base={base_ref!r}")
 
-          branch_match = re.fullmatch(r"(release|hotfix)/(\d+\.\d+\.\d+)", head_ref)
-          if not branch_match:
+          if head_ref.startswith("release/"):
+              release_match = re.fullmatch(r"release/(\d+\.\d+\.\d+)", head_ref)
+              if not release_match:
+                  raise SystemExit(
+                      "Release PRs to main must use a SemVer branch suffix "
+                      "(e.g. release/1.2.3)."
+                  )
+              branch_type = "release"
+              branch_version = release_match.group(1)
+          elif head_ref.startswith("hotfix/"):
+              branch_type = "hotfix"
+              branch_version = None
+          else:
               raise SystemExit(
-                  "PRs to main must come from release/* or hotfix/* with SemVer suffix "
-                  "(e.g. release/1.2.3 or hotfix/1.2.3)."
+                  "PRs to main must come from release/* or hotfix/* branches."
               )
-
-          branch_type = branch_match.group(1)
-          branch_version = branch_match.group(2)
 
           pyproject = tomllib.loads(pathlib.Path("pyproject.toml").read_text(encoding="utf-8"))
           project_version = pyproject["project"]["version"]
@@ -77,10 +84,11 @@ jobs:
               ) from exc
 
           checks = {
-              "branch": branch_version,
               "pyproject.toml": project_version,
               "VersionHistory.md top entry": history_version,
           }
+          if branch_version:
+              checks["release branch suffix"] = branch_version
           if init_version:
               checks["src/mv_laplace/__init__.py"] = init_version
           else:
@@ -94,6 +102,7 @@ jobs:
 
           print("Version integrity check passed.")
           print(f"- Branch type: {branch_type}")
+          print(f"- Branch ref: {head_ref}")
           print(f"- Version: {unique_versions[0]}")
           print(f"- VersionHistory date: {history_date}")
           PY
