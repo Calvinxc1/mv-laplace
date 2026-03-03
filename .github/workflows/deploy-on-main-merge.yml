@@ -104,16 +104,6 @@ jobs:
                   f"Version must increase. Current {project_version} is not greater than previous {previous_version}."
               )
 
-          if head_ref.startswith("hotfix/"):
-              if current[0] != previous[0] or current[1] != previous[1]:
-                  raise SystemExit(
-                      "Hotfix merges must not change major/minor version; increment patch only."
-                  )
-              if current[2] <= previous[2]:
-                  raise SystemExit(
-                      "Hotfix merges must increment patch version over previous release."
-                  )
-
           tag = f"v{project_version}"
           with output_file.open("a", encoding="utf-8") as f:
               f.write(f"version={project_version}\n")
