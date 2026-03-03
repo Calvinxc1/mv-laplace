@@ -24,8 +24,8 @@ uv run pytest -q
 - Start feature work from `dev`:
   - `feature/<name> -> dev`
 - Releases and hotfixes are managed by core developers:
-  - `release/<semver> -> main`
-  - `hotfix/<semver> -> main`
+  - `release/<semver> -> main` (required SemVer branch suffix, e.g. `release/0.2.0`)
+  - `hotfix/<semver> -> main` (required SemVer branch suffix, e.g. `hotfix/0.2.1`)
 
 ## Versioning and Release Notes
 - Follow Semantic Versioning (`MAJOR.MINOR.PATCH`).

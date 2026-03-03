@@ -1,5 +1,12 @@
 # Version History
 
+## v0.2.1 (2026/03/03)
+* Fixed release-note generation in `deploy-on-main-merge.yml` by escaping regex quantifier braces inside an f-string pattern.
+* Restored strict SemVer branch policy for `release/*` and `hotfix/*` PRs to `main` in `version-integrity-main-pr.yml`.
+* Restored hotfix patch-only release gate in `deploy-on-main-merge.yml` (`hotfix/*` merges must increment patch only).
+* Tightened GitFlow PR branch-path checks to require SemVer suffixes for `release/<semver>` and `hotfix/<semver>` when targeting `main`.
+* Updated policy/docs (`AGENTS.md`, `README.md`, `CONTRIBUTING.md`) to reflect required SemVer-suffixed release/hotfix branch naming.
+
 ## v0.2.0 (2026/03/03)
 * Added `random_state` support to `MvLaplaceSampler.sample(...)` for reproducible sampling.
 * Replaced global-seed test patterns with RNG-isolated tests and expanded sampling/reproducibility coverage.
