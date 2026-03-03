@@ -224,7 +224,7 @@ jobs:
           version = os.environ["VERSION"]
           changelog = pathlib.Path("VersionHistory.md").read_text(encoding="utf-8")
           pattern = re.compile(
-              rf"^#{1,2}\s+v{re.escape(version)}\s+\([^)]+\)\n(.*?)(?=^#{1,2}\s+v|\Z)",
+              rf"^#{{1,2}}\s+v{re.escape(version)}\s+\([^)]+\)\n(.*?)(?=^#{{1,2}}\s+v|\Z)",
               re.MULTILINE | re.DOTALL,
           )
           match = pattern.search(changelog)
