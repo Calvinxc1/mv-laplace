@@ -97,6 +97,7 @@ See [`VersionHistory.md`](VersionHistory.md).
 ## Repository Policy
 High-level development policy summary (full details in [`AGENTS.md`](AGENTS.md)):
 - GitFlow is used: `feature/* -> dev`, `release/*|hotfix/* -> main`, with PR-based merges.
+- Release and hotfix branches must use SemVer suffixes: `release/<MAJOR.MINOR.PATCH>`, `hotfix/<MAJOR.MINOR.PATCH>`.
 - Community contributions are welcome through `feature/* -> dev` pull requests; `release/*` and `hotfix/*` flows are core-developer managed.
 - CI runs on PRs to `dev` and `main`; release dry-runs run on `release/*`/`hotfix/*` PRs to `main`; release publish runs after merge to `main`.
 - Semantic Versioning is required (`MAJOR.MINOR.PATCH`) and versioning must be intentional.
