@@ -9,8 +9,8 @@ These instructions apply to the entire repo tree.
   - `main`: production-ready history only.
   - `dev`: integration branch for upcoming work.
   - `feature/*`: branch from `dev`, merge back into `dev`.
-  - `release/*`: branch from `dev`, merge into `main` only.
-  - `hotfix/*`: branch from `main`, merge into `main` only.
+  - `release/<MAJOR.MINOR.PATCH>`: branch from `dev`, merge into `main` only.
+  - `hotfix/<MAJOR.MINOR.PATCH>`: branch from `main`, merge into `main` only.
 - Contribution scope:
   - Community contributors are welcome to propose changes through `feature/* -> dev` pull requests.
   - `release/*` and `hotfix/*` branches and pull requests are core-developer managed.
